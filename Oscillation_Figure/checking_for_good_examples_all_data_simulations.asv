@@ -1,0 +1,27 @@
+in_path='C:\Users\cs687\Documents\MATLAB\General_Model_Figures\Oscillation_Figure\Sim_Data';
+
+name='-D_20.0-tau_3.0-v0_0.01-n_2.0-nu_0.05';
+cond_to_do={'1.5','4.5','10.0','60.0'};
+
+close all;
+
+do_now=1:length(cond_to_do);
+
+for i=do_now
+    a=load([in_path,'S_',cond_to_do{i},name,'.mat']);
+    traces=squeeze(a.trace(:,1,2:end));
+   
+    figure('Units','normalized','Position',[0,0,1,1]);
+    sgtitle([days{d},' ',cond_to_do{i}]);
+    try 
+        for j=1:sum(goodones)
+            subplot(9,9,j)
+            plot([0:10:5770]/60,MY_now(1:578,j)-200,'Linewidth',1);
+            % axis([0,5770/60,0,6000])
+        end
+    catch 
+        continue
+    end
+end
+
+
