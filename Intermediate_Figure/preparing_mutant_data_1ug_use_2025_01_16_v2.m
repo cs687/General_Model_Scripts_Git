@@ -20,8 +20,6 @@ function preparing_mutant_data_1ug_use_2025_01_16_v2(varargin)
 % other wise the input is 'do_plot', 0 e.g.
 % preparing_mutant_data_1ug_use_2025_01_16_v2('do_plot', 0) this does not
 % plot the reloaded data.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%
