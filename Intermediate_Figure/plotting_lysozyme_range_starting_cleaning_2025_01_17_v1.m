@@ -32,7 +32,8 @@ adjust_switch=1;
 %fixed parameters
 last_frame=221;
 max_cells_rep=40;
-max_repeats=21;
+max_repeats=210;
+kill_repeat=[3,1,5]
 
 %Switching data input
 switch_frame=[101,101,102,101,101,...
@@ -65,6 +66,7 @@ axis_y_max=[1500,3000,4000,500,1500,2500,1000,3000,3500,600,1000,2000];
 all_data=cell(max_repeats,length(strains),length(condition));
 all_data_names=cell(max_repeats,length(strains),length(condition));
 num_loaded_cond=zeros(length(strains),length(condition));
+ind_kill=0;
 
 %Looping over Data
 for day_now=1:length(data_day) %Day
@@ -81,6 +83,11 @@ for day_now=1:length(data_day) %Day
                         disp([data_path_main,data_day{day_now},'\Data\',D(repeat_do).name]); 
 
                         %Setting Repeat index
+                        
+                        if sum([strain_now,cond_now,num_loaded_cond(strain_now,cond_now)+1;]==[3,1,5])==3&&ind_kill==0
+                            ind_kill=1;
+                            continue;
+                        end
                         num_loaded_cond(strain_now,cond_now)=num_loaded_cond(strain_now,cond_now)+1;
                         rep_now=num_loaded_cond(strain_now,cond_now);
 

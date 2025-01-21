@@ -32,7 +32,8 @@ adjust_switch=1;
 %fixed parameters
 last_frame=221;
 max_cells_rep=40;
-max_repeats=21;
+max_repeats=210;
+kill_repeat=[3,1,5]
 
 %Switching data input
 switch_frame=[101,101,102,101,101,...
@@ -82,6 +83,9 @@ for day_now=1:length(data_day) %Day
 
                         %Setting Repeat index
                         num_loaded_cond(strain_now,cond_now)=num_loaded_cond(strain_now,cond_now)+1;
+                        if sum([strain_now,cond_now,num_loaded_cond]==[3,1,5])==3
+                            continue;
+                        end
                         rep_now=num_loaded_cond(strain_now,cond_now);
 
                         %Saving Name
@@ -233,7 +237,7 @@ for strain_now=1:length(strains) % all strains
             end
             
             %Plotting
-            plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,goodones,last_frame,ind_cond,axis_y_max);
+            plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,last_frame,ind_cond,axis_y_max);
         end
     end
 end
@@ -261,7 +265,8 @@ if plot_reload==1
         for cond_now=1:length(condition) % conditions
             ind_cond=ind_cond+1;
             for rep_now=1:num_loaded_cond_now(strain_now,cond_now); % The current number of repeats
-                
+                %Setting title
+                t_name_now=['S:',strains{strain_now},' C:',condition{cond_now},' R:',num2str(rep_now)];
                 %Setting correct subplot index
                 ind=ind_cond+(rep_now-1)*max_cond;
 
@@ -276,7 +281,7 @@ if plot_reload==1
                 MY_now=in_data.MY;
         
                 %plotting data
-                plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,goodones,last_frame,ind_cond,axis_y_max);
+                plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,last_frame,ind_cond,axis_y_max);
                 
             end
         end
@@ -291,7 +296,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,goodones,last_frame,ind_cond,axis_y_max);
+function plotting_data_now(MY_now,max_done_repeats_here,max_cond,ind,t_name_now,last_frame,ind_cond,axis_y_max);
 % This function plots the loaded data in subplots. It is used to visuallize
 % the clean data and to check the saved data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -305,7 +310,7 @@ axis([0,last_frame,0,axis_y_max(ind_cond)]);
 %Setting title
 %title(all_data_names_now{rep_now,strain_now,cond_now});
 title(t_name_now);
-goog
+goodones=~isnan(MY_now(last_frame,:));
 
 text(0.1,0.8,['n: ',num2str(sum(goodones))],'Unit','normalize');
 
